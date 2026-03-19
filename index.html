@@ -3,20 +3,147 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Eid Gift from Sabbir</title>
+    <title>Eid Special Gift | from Sabbir</title>
     <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+    <style>
+        :root {
+            --gold: linear-gradient(135deg, #ffdc73 0%, #ffbf00 50%, #8b6b00 100%);
+            --gold-glow: 0 0 20px rgba(255, 191, 0, 0.5);
+            --bg-dark: #020205;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background-color: var(--bg-dark);
+            font-family: 'Hind Siliguri', sans-serif;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            color: white;
+        }
+
+        /* Star Background */
+        #bg-canvas { position: fixed; top: 0; left: 0; z-index: 1; }
+
+        .phone-frame {
+            width: 360px;
+            height: 740px;
+            background: #000;
+            border: 8px solid #1a1a1a;
+            border-radius: 50px;
+            position: relative;
+            z-index: 10;
+            box-shadow: 0 40px 80px rgba(0,0,0,0.9);
+            overflow: hidden;
+            border: 2px solid #333;
+        }
+
+        .screen {
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at top, #0d1117, #020205);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 25px;
+            position: relative;
+        }
+
+        /* 3D Box */
+        .gift-container { perspective: 1000px; margin-bottom: 30px; }
+        .box-3d {
+            width: 130px;
+            height: 130px;
+            position: relative;
+            transform-style: preserve-3d;
+            animation: rotateBox 10s infinite linear;
+            cursor: pointer;
+        }
+        @keyframes rotateBox {
+            0% { transform: rotateY(0deg) rotateX(10deg); }
+            100% { transform: rotateY(360deg) rotateX(10deg); }
+        }
+        .side {
+            position: absolute;
+            width: 130px;
+            height: 130px;
+            background: linear-gradient(135deg, #c19a3b, #8a6624);
+            border: 1px solid #f9d56e;
+        }
+        .front { transform: translateZ(65px); }
+        .back { transform: rotateY(180deg) translateZ(65px); }
+        .right { transform: rotateY(90deg) translateZ(65px); }
+        .left { transform: rotateY(-90deg) translateZ(65px); }
+        .top { transform: rotateX(90deg) translateZ(65px); background: #f9d56e; }
+
+        /* Navigation Steps */
+        .step {
+            position: absolute;
+            inset: 0;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 30px;
+            z-index: 20;
+        }
+        .active { display: flex; animation: fadeIn 0.8s forwards; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .btn-luxury {
+            margin-top: 25px;
+            padding: 14px 35px;
+            background: var(--gold);
+            border: none;
+            border-radius: 50px;
+            color: #000;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: var(--gold-glow);
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            padding: 35px 20px;
+            border-radius: 25px;
+            width: 100%;
+        }
+
+        #fireworks { position: absolute; inset: 0; pointer-events: none; }
+
+        .from-box { margin-top: 40px; }
+        .name {
+            display: block;
+            font-size: 2.2rem;
+            background: var(--gold);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 700;
+        }
+
+        .watermark { position: absolute; bottom: 20px; font-size: 9px; opacity: 0.3; letter-spacing: 2px; }
+    </style>
 </head>
 <body>
 
-    <canvas id="star-canvas"></canvas>
+    <canvas id="bg-canvas"></canvas>
 
     <div class="phone-frame">
         <div class="screen">
             
-            <div class="step active" id="step1">
-                <div class="gift-wrapper">
-                    <div class="box-3d" onclick="goNext(1)">
+            <div class="step active" id="s1">
+                <div class="gift-container" onclick="nextStep(1)">
+                    <div class="box-3d">
                         <div class="side front"></div>
                         <div class="side back"></div>
                         <div class="side left"></div>
@@ -24,34 +151,81 @@
                         <div class="side top"></div>
                     </div>
                 </div>
-                <h2 class="gold-msg">আপনার জন্য একটি সারপ্রাইজ!</h2>
-                <button class="btn-open" onclick="goNext(1)">বক্সটি খুলুন</button>
+                <h2 style="color: #ffcf40;">আপনার জন্য সারপ্রাইজ!</h2>
+                <button class="btn-luxury" onclick="nextStep(1)">খুলুন</button>
             </div>
 
-            <div class="step" id="step2">
+            <div class="step" id="s2">
                 <div class="glass-card">
-                    <span class="eid-icon">🌙</span>
-                    <h2 class="wish-title">ঈদ মোবারক!</h2>
-                    <p class="wish-text">
-                        পবিত্র ঈদুল ফিতরের আনন্দ ছড়িয়ে পড়ুক আপনার প্রতিটি মুহূর্তে। হাসিখুশিতে কাটুক আপনার জীবন।
-                    </p>
+                    <h2 style="color: #ffcf40; font-size: 2rem;">ঈদ মোবারক!</h2>
+                    <p style="margin-top: 15px; line-height: 1.6;">পবিত্র ঈদের আনন্দ আপনার জীবনে বয়ে আনুক অনাবিল সুখ ও শান্তি।</p>
                 </div>
             </div>
 
-            <div class="step" id="step3">
+            <div class="step" id="s3">
                 <canvas id="fireworks"></canvas>
-                <h1 class="main-fest-text">শুভ ঈদ!</h1>
-                
-                <div class="from-tag">
-                    শুভেচ্ছান্তে,
-                    <span class="from-name">Sabbir</span>
+                <h1 style="font-size: 2.8rem; color: #ffcf40;">শুভ ঈদ!</h1>
+                <div class="from-box">
+                    <p>শুভেচ্ছান্তে,</p>
+                    <span class="name">Sabbir</span>
                 </div>
             </div>
 
-            <div class="watermark">EID SPECIAL</div>
+            <div class="watermark">EID SPECIAL | 2026</div>
         </div>
     </div>
 
-    <script src="script.js"></script>
+    <script>
+        // Stars
+        const canvas = document.getElementById('bg-canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        let stars = [];
+        for(let i=0; i<100; i++) stars.push({x: Math.random()*canvas.width, y: Math.random()*canvas.height, s: Math.random()*2});
+        function drawStars() {
+            ctx.clearRect(0,0,canvas.width,canvas.height);
+            ctx.fillStyle = "white";
+            stars.forEach(s => { ctx.beginPath(); ctx.arc(s.x, s.y, s.s, 0, Math.PI*2); ctx.fill(); });
+            requestAnimationFrame(drawStars);
+        }
+        drawStars();
+
+        // Steps
+        function nextStep(n) {
+            document.getElementById(`s${n}`).classList.remove('active');
+            let next = n + 1;
+            if(document.getElementById(`s${next}`)) {
+                setTimeout(() => {
+                    document.getElementById(`s${next}`).classList.add('active');
+                    if(next === 2) setTimeout(() => nextStep(2), 4000);
+                    if(next === 3) startFireworks();
+                }, 500);
+            }
+        }
+
+        // Fireworks
+        function startFireworks() {
+            const fCanvas = document.getElementById('fireworks');
+            const fCtx = fCanvas.getContext('2d');
+            fCanvas.width = 360; fCanvas.height = 740;
+            let parts = [];
+            function animate() {
+                fCtx.clearRect(0,0,360,740);
+                if(Math.random() < 0.1) {
+                    let x = Math.random()*360, y = Math.random()*300;
+                    for(let i=0; i<30; i++) parts.push({x, y, vx:(Math.random()-0.5)*10, vy:(Math.random()-0.5)*10, l:1});
+                }
+                parts.forEach((p,i) => {
+                    p.x+=p.vx; p.y+=p.vy; p.l-=0.02;
+                    fCtx.fillStyle = `rgba(255,215,0,${p.l})`;
+                    fCtx.beginPath(); fCtx.arc(p.x, p.y, 2, 0, 7); fCtx.fill();
+                    if(p.l<=0) parts.splice(i,1);
+                });
+                requestAnimationFrame(animate);
+            }
+            animate();
+        }
+    </script>
 </body>
 </html>
